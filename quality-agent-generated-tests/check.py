@@ -17,533 +17,255 @@ base_url = "https://lease-management-service-729496874389.us-central1.run.app/"
 driver = webdriver.Chrome()
 driver.implicitly_wait(0.5)
 
-# Test Case TC_TENANT_01: Add a new tenant with valid data
-try:
-    print("Running Test Case TC_TENANT_01: Add a new tenant with valid data")
-    # Navigate to "Add Tenant" screen
-    driver.get(base_url + "add_tenant")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
-    print("Test Step 1: Navigate to 'Add Tenant' screen - PASSED")
-
-    # Enter valid first name in "First Name" field
-    driver.find_element(By.ID, "first_name").send_keys("John")
-    print("Test Step 2: Enter valid first name in 'First Name' field - PASSED")
-
-    # Enter valid last name in "Last Name" field
-    driver.find_element(By.ID, "last_name").send_keys("Doe")
-    print("Test Step 3: Enter valid last name in 'Last Name' field - PASSED")
-
-    # Enter valid contact number in "Contact Number" field
-    driver.find_element(By.ID, "contact_number").send_keys("1234567890")
-    print("Test Step 4: Enter valid contact number in 'Contact Number' field - PASSED")
-
-    # Enter valid email address in "Email" field
-    driver.find_element(By.ID, "email").send_keys("john.doe@example.com")
-    print("Test Step 5: Enter valid email address in 'Email' field - PASSED")
-
-    # Click on "Add Tenant" button
-    driver.find_element(By.XPATH, "//button[text()='Add Tenant']").click()
-    time.sleep(0.5)
-    print("Test Step 6: Click on 'Add Tenant' button - PASSED")
-
-    # Verify tenant is added successfully
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//table[@class='table table-striped']//tbody//tr//td[text()='John']")))
-    print("Test Case TC_TENANT_01: Add a new tenant with valid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_TENANT_01.png")
-    failed_tests += 1
-
-# Test Case TC_TENANT_02: Add a new tenant with invalid data
-try:
-    print("Running Test Case TC_TENANT_02: Add a new tenant with invalid data")
-    # Navigate to "Add Tenant" screen
-    driver.get(base_url + "add_tenant")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
-    print("Test Step 1: Navigate to 'Add Tenant' screen - PASSED")
-
-    # Enter invalid first name (special characters) in "First Name" field
-    driver.find_element(By.ID, "first_name").send_keys("!@#$%^")
-    print("Test Step 2: Enter invalid first name (special characters) in 'First Name' field - PASSED")
-
-    # Enter invalid last name (numbers only) in "Last Name" field
-    driver.find_element(By.ID, "last_name").send_keys("12345")
-    print("Test Step 3: Enter invalid last name (numbers only) in 'Last Name' field - PASSED")
-
-    # Enter invalid contact number (alphabets) in "Contact Number" field
-    driver.find_element(By.ID, "contact_number").send_keys("abcdefg")
-    print("Test Step 4: Enter invalid contact number (alphabets) in 'Contact Number' field - PASSED")
-
-    # Enter invalid email address (without "@" symbol) in "Email" field
-    driver.find_element(By.ID, "email").send_keys("john.doeexample.com")
-    print("Test Step 5: Enter invalid email address (without '@' symbol) in 'Email' field - PASSED")
-
-    # Click on "Add Tenant" button
-    driver.find_element(By.XPATH, "//button[text()='Add Tenant']").click()
-    time.sleep(0.5)
-    print("Test Step 6: Click on 'Add Tenant' button - PASSED")
-
-    # Verify tenant is not added and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_TENANT_02: Add a new tenant with invalid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_TENANT_02.png")
-    failed_tests += 1
-
-# Test Case TC_TENANT_03: Add a new tenant with empty fields
-try:
-    print("Running Test Case TC_TENANT_03: Add a new tenant with empty fields")
-    # Navigate to "Add Tenant" screen
-    driver.get(base_url + "add_tenant")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
-    print("Test Step 1: Navigate to 'Add Tenant' screen - PASSED")
-
-    # Leave "First Name" field empty
-    driver.find_element(By.ID, "first_name").clear()
-    print("Test Step 2: Leave 'First Name' field empty - PASSED")
-
-    # Leave "Last Name" field empty
-    driver.find_element(By.ID, "last_name").clear()
-    print("Test Step 3: Leave 'Last Name' field empty - PASSED")
-
-    # Leave "Contact Number" field empty
-    driver.find_element(By.ID, "contact_number").clear()
-    print("Test Step 4: Leave 'Contact Number' field empty - PASSED")
-
-    # Leave "Email" field empty
-    driver.find_element(By.ID, "email").clear()
-    print("Test Step 5: Leave 'Email' field empty - PASSED")
-
-    # Click on "Add Tenant" button
-    driver.find_element(By.XPATH, "//button[text()='Add Tenant']").click()
-    time.sleep(0.5)
-    print("Test Step 6: Click on 'Add Tenant' button - PASSED")
-
-    # Verify tenant is not added and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_TENANT_03: Add a new tenant with empty fields - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_TENANT_03.png")
-    failed_tests += 1
-
-# Test Case TC_TENANT_04: Cancel adding a new tenant
-try:
-    print("Running Test Case TC_TENANT_04: Cancel adding a new tenant")
-    # Navigate to "Add Tenant" screen
-    driver.get(base_url + "add_tenant")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
-    print("Test Step 1: Navigate to 'Add Tenant' screen - PASSED")
-
-    # Enter valid data in all fields
-    driver.find_element(By.ID, "first_name").send_keys("Jane")
-    driver.find_element(By.ID, "last_name").send_keys("Smith")
-    driver.find_element(By.ID, "contact_number").send_keys("9876543210")
-    driver.find_element(By.ID, "email").send_keys("jane.smith@example.com")
-    print("Test Step 2: Enter valid data in all fields - PASSED")
-
-    # Click on "Cancel" button
-    driver.find_element(By.XPATH, "//button[text()='Cancel']").click()
-    time.sleep(0.5)
-    print("Test Step 3: Click on 'Cancel' button - PASSED")
-
-    # Verify Add Tenant screen is closed and no tenant is added
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//h1[text()='Lease Management System']")))
-    print("Test Case TC_TENANT_04: Cancel adding a new tenant - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_TENANT_04.png")
-    failed_tests += 1
-
-# Test Case TC_PROPERTY_01: Add a new property with valid data
-try:
-    print("Running Test Case TC_PROPERTY_01: Add a new property with valid data")
-    # Navigate to "Add Property" screen
-    driver.get(base_url + "add_property")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "address_line1")))
-    print("Test Step 1: Navigate to 'Add Property' screen - PASSED")
-
-    # Enter valid address line 1 in "Address Line 1" field
-    driver.find_element(By.ID, "address_line1").send_keys("123 Main Street")
-    print("Test Step 2: Enter valid address line 1 in 'Address Line 1' field - PASSED")
-
-    # Enter valid address line 2 in "Address Line 2" field
-    driver.find_element(By.ID, "address_line2").send_keys("Apt 1")
-    print("Test Step 3: Enter valid address line 2 in 'Address Line 2' field - PASSED")
-
-    # Enter valid city in "City" field
-    driver.find_element(By.ID, "city").send_keys("Anytown")
-    print("Test Step 4: Enter valid city in 'City' field - PASSED")
-
-    # Enter valid state in "State" field
-    driver.find_element(By.ID, "state").send_keys("CA")
-    print("Test Step 5: Enter valid state in 'State' field - PASSED")
-
-    # Enter valid zip code in "Zip Code" field
-    driver.find_element(By.ID, "zip_code").send_keys("91234")
-    print("Test Step 6: Enter valid zip code in 'Zip Code' field - PASSED")
-
-    # Select valid property status in "Status" field
-    driver.find_element(By.ID, "status").send_keys("To Rent")
-    print("Test Step 7: Select valid property status in 'Status' field - PASSED")
-
-    # Enter valid unit number in "Unit Number" field
-    driver.find_element(By.ID, "unit_number").send_keys("101")
-    print("Test Step 8: Enter valid unit number in 'Unit Number' field - PASSED")
-
-    # Click on "Add Property" button
-    driver.find_element(By.XPATH, "//button[text()='Add Property']").click()
-    time.sleep(0.5)
-    print("Test Step 9: Click on 'Add Property' button - PASSED")
-
-    # Verify property is added successfully
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//table[@class='table table-striped']//tbody//tr//td[text()='123 Main Street']")))
-    print("Test Case TC_PROPERTY_01: Add a new property with valid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_01.png")
-    failed_tests += 1
-
-# Test Case TC_PROPERTY_02: Add a new property with invalid data
-try:
-    print("Running Test Case TC_PROPERTY_02: Add a new property with invalid data")
-    # Navigate to "Add Property" screen
-    driver.get(base_url + "add_property")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "address_line1")))
-    print("Test Step 1: Navigate to 'Add Property' screen - PASSED")
-
-    # Enter invalid address line 1 (special characters) in "Address Line 1" field
-    driver.find_element(By.ID, "address_line1").send_keys("!@#$%^")
-    print("Test Step 2: Enter invalid address line 1 (special characters) in 'Address Line 1' field - PASSED")
-
-    # Enter invalid address line 2 (numbers only) in "Address Line 2" field
-    driver.find_element(By.ID, "address_line2").send_keys("12345")
-    print("Test Step 3: Enter invalid address line 2 (numbers only) in 'Address Line 2' field - PASSED")
-
-    # Enter invalid city (numbers only) in "City" field
-    driver.find_element(By.ID, "city").send_keys("12345")
-    print("Test Step 4: Enter invalid city (numbers only) in 'City' field - PASSED")
-
-    # Enter invalid state (numbers only) in "State" field
-    driver.find_element(By.ID, "state").send_keys("12345")
-    print("Test Step 5: Enter invalid state (numbers only) in 'State' field - PASSED")
-
-    # Enter invalid zip code (alphabets) in "Zip Code" field
-    driver.find_element(By.ID, "zip_code").send_keys("abcdefg")
-    print("Test Step 6: Enter invalid zip code (alphabets) in 'Zip Code' field - PASSED")
-
-    # Select invalid property status (not from the dropdown list) in "Status" field
-    driver.find_element(By.ID, "status").send_keys("Invalid Status")
-    print("Test Step 7: Select invalid property status (not from the dropdown list) in 'Status' field - PASSED")
-
-    # Enter invalid unit number (alphabets) in "Unit Number" field
-    driver.find_element(By.ID, "unit_number").send_keys("abcdefg")
-    print("Test Step 8: Enter invalid unit number (alphabets) in 'Unit Number' field - PASSED")
-
-    # Click on "Add Property" button
-    driver.find_element(By.XPATH, "//button[text()='Add Property']").click()
-    time.sleep(0.5)
-    print("Test Step 9: Click on 'Add Property' button - PASSED")
-
-    # Verify property is not added and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_PROPERTY_02: Add a new property with invalid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_02.png")
-    failed_tests += 1
-
-# Test Case TC_PROPERTY_03: Add a new property with empty fields
-try:
-    print("Running Test Case TC_PROPERTY_03: Add a new property with empty fields")
-    # Navigate to "Add Property" screen
-    driver.get(base_url + "add_property")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "address_line1")))
-    print("Test Step 1: Navigate to 'Add Property' screen - PASSED")
-
-    # Leave "Address Line 1" field empty
-    driver.find_element(By.ID, "address_line1").clear()
-    print("Test Step 2: Leave 'Address Line 1' field empty - PASSED")
-
-    # Leave "City" field empty
-    driver.find_element(By.ID, "city").clear()
-    print("Test Step 3: Leave 'City' field empty - PASSED")
-
-    # Leave "State" field empty
-    driver.find_element(By.ID, "state").clear()
-    print("Test Step 4: Leave 'State' field empty - PASSED")
-
-    # Leave "Zip Code" field empty
-    driver.find_element(By.ID, "zip_code").clear()
-    print("Test Step 5: Leave 'Zip Code' field empty - PASSED")
-
-    # Leave "Status" field empty
-    driver.find_element(By.ID, "status").clear()
-    print("Test Step 6: Leave 'Status' field empty - PASSED")
-
-    # Leave "Unit Number" field empty
-    driver.find_element(By.ID, "unit_number").clear()
-    print("Test Step 7: Leave 'Unit Number' field empty - PASSED")
-
-    # Click on "Add Property" button
-    driver.find_element(By.XPATH, "//button[text()='Add Property']").click()
-    time.sleep(0.5)
-    print("Test Step 8: Click on 'Add Property' button - PASSED")
-
-    # Verify property is not added and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_PROPERTY_03: Add a new property with empty fields - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_03.png")
-    failed_tests += 1
-
-# Test Case TC_PROPERTY_04: Cancel adding a new property
-try:
-    print("Running Test Case TC_PROPERTY_04: Cancel adding a new property")
-    # Navigate to "Add Property" screen
-    driver.get(base_url + "add_property")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "address_line1")))
-    print("Test Step 1: Navigate to 'Add Property' screen - PASSED")
-
-    # Enter valid data in all fields
-    driver.find_element(By.ID, "address_line1").send_keys("456 Elm Street")
-    driver.find_element(By.ID, "address_line2").send_keys("Apt 2")
-    driver.find_element(By.ID, "city").send_keys("Springfield")
-    driver.find_element(By.ID, "state").send_keys("IL")
-    driver.find_element(By.ID, "zip_code").send_keys("62701")
-    driver.find_element(By.ID, "status").send_keys("On Lease")
-    driver.find_element(By.ID, "unit_number").send_keys("202")
-    print("Test Step 2: Enter valid data in all fields - PASSED")
-
-    # Click on "Cancel" button
-    driver.find_element(By.XPATH, "//button[text()='Cancel']").click()
-    time.sleep(0.5)
-    print("Test Step 3: Click on 'Cancel' button - PASSED")
-
-    # Verify Add Property screen is closed and no property is added
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//h1[text()='Lease Management System']")))
-    print("Test Case TC_PROPERTY_04: Cancel adding a new property - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_04.png")
-    failed_tests += 1
-
-# Test Case TC_LEASE_01: Prepare a new lease with valid data
-try:
-    print("Running Test Case TC_LEASE_01: Prepare a new lease with valid data")
-    # Navigate to "Prepare Lease" screen
-    driver.get(base_url + "prepare_lease")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "property_id")))
-    print("Test Step 1: Navigate to 'Prepare Lease' screen - PASSED")
-
-    # Select a valid property from the "Property" dropdown
-    driver.find_element(By.ID, "property_id").send_keys("123 Main Street")
-    print("Test Step 2: Select a valid property from the 'Property' dropdown - PASSED")
-
-    # Select a valid tenant from the "Tenant" dropdown
-    driver.find_element(By.ID, "tenant_id").send_keys("John Doe")
-    print("Test Step 3: Select a valid tenant from the 'Tenant' dropdown - PASSED")
-
-    # Enter valid start date in "Start Date" field
-    driver.find_element(By.ID, "start_date").send_keys("2024-01-01")
-    print("Test Step 4: Enter valid start date in 'Start Date' field - PASSED")
-
-    # Enter valid end date in "End Date" field
-    driver.find_element(By.ID, "end_date").send_keys("2025-01-01")
-    print("Test Step 5: Enter valid end date in 'End Date' field - PASSED")
-
-    # Enter valid monthly rent in "Monthly Rent" field
-    driver.find_element(By.ID, "monthly_rent").send_keys("1500")
-    print("Test Step 6: Enter valid monthly rent in 'Monthly Rent' field - PASSED")
-
-    # Enter valid security deposit in "Security Deposit" field
-    driver.find_element(By.ID, "security_deposit").send_keys("1500")
-    print("Test Step 7: Enter valid security deposit in 'Security Deposit' field - PASSED")
-
-    # Enter valid payment due date in "Payment Due Date" field
-    driver.find_element(By.ID, "payment_due_date").send_keys("2024-01-15")
-    print("Test Step 8: Enter valid payment due date in 'Payment Due Date' field - PASSED")
-
-    # Enter valid payment method in "Payment Method" field
-    driver.find_element(By.ID, "payment_method").send_keys("Check")
-    print("Test Step 9: Enter valid payment method in 'Payment Method' field - PASSED")
-
-    # Click on "Create Lease" button
-    driver.find_element(By.XPATH, "//button[text()='Create Lease']").click()
-    time.sleep(0.5)
-    print("Test Step 10: Click on 'Create Lease' button - PASSED")
-
-    # Verify lease is created successfully
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//table[@class='table table-striped']//tbody//tr//td[text()='123 Main Street']")))
-    print("Test Case TC_LEASE_01: Prepare a new lease with valid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_LEASE_01.png")
-    failed_tests += 1
-
-# Test Case TC_LEASE_02: Prepare a new lease with invalid data
-try:
-    print("Running Test Case TC_LEASE_02: Prepare a new lease with invalid data")
-    # Navigate to "Prepare Lease" screen
-    driver.get(base_url + "prepare_lease")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "property_id")))
-    print("Test Step 1: Navigate to 'Prepare Lease' screen - PASSED")
-
-    # Select an invalid property (not from the dropdown list) from the "Property" dropdown
-    driver.find_element(By.ID, "property_id").send_keys("Invalid Property")
-    print("Test Step 2: Select an invalid property (not from the dropdown list) from the 'Property' dropdown - PASSED")
-
-    # Select an invalid tenant (not from the dropdown list) from the "Tenant" dropdown
-    driver.find_element(By.ID, "tenant_id").send_keys("Invalid Tenant")
-    print("Test Step 3: Select an invalid tenant (not from the dropdown list) from the 'Tenant' dropdown - PASSED")
-
-    # Enter invalid start date (future date) in "Start Date" field
-    driver.find_element(By.ID, "start_date").send_keys("2025-01-01")
-    print("Test Step 4: Enter invalid start date (future date) in 'Start Date' field - PASSED")
-
-    # Enter invalid end date (past date) in "End Date" field
-    driver.find_element(By.ID, "end_date").send_keys("2023-01-01")
-    print("Test Step 5: Enter invalid end date (past date) in 'End Date' field - PASSED")
-
-    # Enter invalid monthly rent (alphabets) in "Monthly Rent" field
-    driver.find_element(By.ID, "monthly_rent").send_keys("abc")
-    print("Test Step 6: Enter invalid monthly rent (alphabets) in 'Monthly Rent' field - PASSED")
-
-    # Enter invalid security deposit (alphabets) in "Security Deposit" field
-    driver.find_element(By.ID, "security_deposit").send_keys("xyz")
-    print("Test Step 7: Enter invalid security deposit (alphabets) in 'Security Deposit' field - PASSED")
-
-    # Enter invalid payment due date (future date) in "Payment Due Date" field
-    driver.find_element(By.ID, "payment_due_date").send_keys("2025-01-15")
-    print("Test Step 8: Enter invalid payment due date (future date) in 'Payment Due Date' field - PASSED")
-
-    # Enter invalid payment method (not from the dropdown list) in "Payment Method" field
-    driver.find_element(By.ID, "payment_method").send_keys("Invalid Payment Method")
-    print("Test Step 9: Enter invalid payment method (not from the dropdown list) in 'Payment Method' field - PASSED")
-
-    # Click on "Create Lease" button
-    driver.find_element(By.XPATH, "//button[text()='Create Lease']").click()
-    time.sleep(0.5)
-    print("Test Step 10: Click on 'Create Lease' button - PASSED")
-
-    # Verify lease is not created and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_LEASE_02: Prepare a new lease with invalid data - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_LEASE_02.png")
-    failed_tests += 1
-
-# Test Case TC_LEASE_03: Prepare a new lease with empty fields
-try:
-    print("Running Test Case TC_LEASE_03: Prepare a new lease with empty fields")
-    # Navigate to "Prepare Lease" screen
-    driver.get(base_url + "prepare_lease")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "property_id")))
-    print("Test Step 1: Navigate to 'Prepare Lease' screen - PASSED")
-
-    # Leave "Property" field empty
-    driver.find_element(By.ID, "property_id").clear()
-    print("Test Step 2: Leave 'Property' field empty - PASSED")
-
-    # Leave "Tenant" field empty
-    driver.find_element(By.ID, "tenant_id").clear()
-    print("Test Step 3: Leave 'Tenant' field empty - PASSED")
-
-    # Leave "Start Date" field empty
-    driver.find_element(By.ID, "start_date").clear()
-    print("Test Step 4: Leave 'Start Date' field empty - PASSED")
-
-    # Leave "End Date" field empty
-    driver.find_element(By.ID, "end_date").clear()
-    print("Test Step 5: Leave 'End Date' field empty - PASSED")
-
-    # Leave "Monthly Rent" field empty
-    driver.find_element(By.ID, "monthly_rent").clear()
-    print("Test Step 6: Leave 'Monthly Rent' field empty - PASSED")
-
-    # Leave "Security Deposit" field empty
-    driver.find_element(By.ID, "security_deposit").clear()
-    print("Test Step 7: Leave 'Security Deposit' field empty - PASSED")
-
-    # Leave "Payment Due Date" field empty
-    driver.find_element(By.ID, "payment_due_date").clear()
-    print("Test Step 8: Leave 'Payment Due Date' field empty - PASSED")
-
-    # Leave "Payment Method" field empty
-    driver.find_element(By.ID, "payment_method").clear()
-    print("Test Step 9: Leave 'Payment Method' field empty - PASSED")
-
-    # Click on "Create Lease" button
-    driver.find_element(By.XPATH, "//button[text()='Create Lease']").click()
-    time.sleep(0.5)
-    print("Test Step 10: Click on 'Create Lease' button - PASSED")
-
-    # Verify lease is not created and error message is displayed
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@class='alert alert-danger']")))
-    print("Test Case TC_LEASE_03: Prepare a new lease with empty fields - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_LEASE_03.png")
-    failed_tests += 1
-
-# Test Case TC_LEASE_04: Cancel preparing a new lease
-try:
-    print("Running Test Case TC_LEASE_04: Cancel preparing a new lease")
-    # Navigate to "Prepare Lease" screen
-    driver.get(base_url + "prepare_lease")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "property_id")))
-    print("Test Step 1: Navigate to 'Prepare Lease' screen - PASSED")
-
-    # Enter valid data in all fields
-    driver.find_element(By.ID, "property_id").send_keys("123 Main Street")
-    driver.find_element(By.ID, "tenant_id").send_keys("John Doe")
-    driver.find_element(By.ID, "start_date").send_keys("2024-02-01")
-    driver.find_element(By.ID, "end_date").send_keys("2025-02-01")
-    driver.find_element(By.ID, "monthly_rent").send_keys("1700")
-    driver.find_element(By.ID, "security_deposit").send_keys("1700")
-    driver.find_element(By.ID, "payment_due_date").send_keys("2024-02-15")
-    driver.find_element(By.ID, "payment_method").send_keys("Cash")
-    print("Test Step 2: Enter valid data in all fields - PASSED")
-
-    # Click on "Cancel" button
-    driver.find_element(By.XPATH, "//button[text()='Cancel']").click()
-    time.sleep(0.5)
-    print("Test Step 3: Click on 'Cancel' button - PASSED")
-
-    # Verify Prepare Lease screen is closed and no lease is created
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//h1[text()='Lease Management System']")))
-    print("Test Case TC_LEASE_04: Cancel preparing a new lease - PASSED")
-    passed_tests += 1
-
-except Exception as e:
-    print(f"Test step failed: {e}")
-    driver.save_screenshot(f"error_screenshot_TC_LEASE_04.png")
-    failed_tests += 1
-
-# Close the WebDriver
+# Function to take a screenshot
+def take_screenshot(test_step_description):
+    try:
+        driver.save_screenshot(f'error_screenshot_{test_step_description}.png')
+    except Exception as e:
+        print(f"Error taking screenshot: {e}")
+
+# Function to handle test steps
+def execute_test_step(test_step_id, test_step_description, expected_result, *args):
+    global passed_tests, failed_tests
+    try:
+        # Execute the test step based on the provided arguments
+        if len(args) == 1:
+            # Click operation
+            element = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, args[0]))
+            )
+            element.click()
+            time.sleep(0.5)
+        elif len(args) == 2:
+            # Input operation
+            element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, args[0]))
+            )
+            element.send_keys(args[1])
+            time.sleep(0.5)
+        elif len(args) == 3:
+            # Select operation
+            element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, args[0]))
+            )
+            element.select_by_visible_text(args[1])
+            time.sleep(0.5)
+        else:
+            print(f"Test step {test_step_id} not implemented.")
+            return
+
+        # Verify the expected result
+        if expected_result in driver.page_source:
+            print(f"Test step {test_step_id} passed: {test_step_description}")
+            passed_tests += 1
+        else:
+            print(f"Test step {test_step_id} failed: {test_step_description}")
+            failed_tests += 1
+            take_screenshot(test_step_description)
+    except Exception as e:
+        print(f"Test step {test_step_id} failed: {test_step_description}")
+        failed_tests += 1
+        take_screenshot(test_step_description)
+        print(f"Error: {e}")
+
+# Test Case TC_TENANT_01
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Tenant' button", "Add New Tenant", "Add Tenant")
+execute_test_step(2, "Enter valid first name in 'First Name' field", "First name is entered successfully", "first_name", "John")
+execute_test_step(3, "Enter valid last name in 'Last Name' field", "Last name is entered successfully", "last_name", "Doe")
+execute_test_step(4, "Enter valid contact number in 'Contact Number' field", "Contact number is entered successfully", "contact_number", "1234567890")
+execute_test_step(5, "Enter valid email address in 'Email' field", "Email address is entered successfully", "email", "john.doe@example.com")
+execute_test_step(6, "Click on 'Add Tenant' button", "Tenant is created successfully and displayed in the Tenants table", "Add Tenant")
+
+# Test Case TC_TENANT_02
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Tenant' button", "Add New Tenant", "Add Tenant")
+execute_test_step(2, "Enter invalid first name (special characters) in 'First Name' field", "Error message is displayed for invalid first name", "first_name", "John*")
+execute_test_step(3, "Enter invalid last name (numbers only) in 'Last Name' field", "Error message is displayed for invalid last name", "last_name", "12345")
+execute_test_step(4, "Enter invalid contact number (alphabets) in 'Contact Number' field", "Error message is displayed for invalid contact number", "contact_number", "abc123")
+execute_test_step(5, "Enter invalid email address (without @ symbol) in 'Email' field", "Error message is displayed for invalid email address", "email", "john.doeexample.com")
+execute_test_step(6, "Click on 'Add Tenant' button", "Tenant is not created and error message is displayed", "Add Tenant")
+
+# Test Case TC_TENANT_03
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Tenant' button", "Add New Tenant", "Add Tenant")
+execute_test_step(2, "Leave 'First Name' field empty", "Error message is displayed for empty first name", "first_name", "")
+execute_test_step(3, "Leave 'Last Name' field empty", "Error message is displayed for empty last name", "last_name", "")
+execute_test_step(4, "Leave 'Contact Number' field empty", "Contact number is accepted as optional", "contact_number", "")
+execute_test_step(5, "Leave 'Email' field empty", "Error message is displayed for empty email address", "email", "")
+execute_test_step(6, "Click on 'Add Tenant' button", "Tenant is not created and error message is displayed", "Add Tenant")
+
+# Test Case TC_TENANT_04
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Tenant' button", "Add New Tenant", "Add Tenant")
+execute_test_step(2, "Enter valid data in all fields", "Data is entered successfully", "first_name", "Jane", "last_name", "Doe", "contact_number", "9876543210", "email", "jane.doe@example.com")
+execute_test_step(3, "Click on 'Cancel' button", "Add New Tenant screen is closed and user is redirected to the main screen", "Cancel")
+
+# Test Case TC_TENANT_05
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Tenants table", "Tenants table is displayed", "Tenants")
+execute_test_step(2, "Click on 'Actions' button for an existing tenant", "Edit Tenant screen is displayed", "Actions")
+execute_test_step(3, "Edit the 'First Name' field", "First name is updated successfully", "first_name", "Jane")
+execute_test_step(4, "Click on 'Save' button", "Tenant details are updated successfully and displayed in the Tenants table", "Save")
+
+# Test Case TC_TENANT_06
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Tenants table", "Tenants table is displayed", "Tenants")
+execute_test_step(2, "Click on 'Actions' button for an existing tenant", "Delete confirmation dialog is displayed", "Actions")
+execute_test_step(3, "Click on 'Delete' button", "Tenant is deleted successfully and removed from the Tenants table", "Delete")
+
+# Test Case TC_TENANT_07
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Tenants table", "Tenants table is displayed", "Tenants")
+execute_test_step(2, "Enter a valid first name in the search field", "Tenants matching the entered first name are displayed", "search_tenant", "John")
+execute_test_step(3, "Clear the search field", "All tenants are displayed again", "search_tenant", "")
+
+# Test Case TC_TENANT_08
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Tenants table", "Tenants table is displayed", "Tenants")
+execute_test_step(2, "Click on the 'First Name' of a tenant", "Tenant details are displayed in a separate screen", "First Name")
+execute_test_step(3, "Click on 'Back' button", "User is redirected to the Tenants table", "Back")
+
+# Test Case TC_PROPERTY_01
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Property' button", "Add New Property screen is displayed", "Add Property")
+execute_test_step(2, "Enter valid address line 1 in 'Address Line 1' field", "Address line 1 is entered successfully", "address_line1", "123 Main St")
+execute_test_step(3, "Enter valid address line 2 in 'Address Line 2' field", "Address line 2 is entered successfully", "address_line2", "Apt 1")
+execute_test_step(4, "Enter valid city in 'City' field", "City is entered successfully", "city", "Anytown")
+execute_test_step(5, "Enter valid state in 'State' field", "State is entered successfully", "state", "CA")
+execute_test_step(6, "Enter valid zip code in 'Zip Code' field", "Zip code is entered successfully", "zip_code", "91234")
+execute_test_step(7, "Enter valid status in 'Status' field", "Status is entered successfully", "status", "To Rent")
+execute_test_step(8, "Enter valid unit number in 'Unit Number' field", "Unit number is entered successfully", "unit_number", "1")
+execute_test_step(9, "Click on 'Add Property' button", "Property is created successfully and displayed in the Properties table", "Add Property")
+
+# Test Case TC_PROPERTY_02
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Property' button", "Add New Property screen is displayed", "Add Property")
+execute_test_step(2, "Enter invalid address line 1 (special characters) in 'Address Line 1' field", "Error message is displayed for invalid address line 1", "address_line1", "123 Main* St")
+execute_test_step(3, "Enter invalid address line 2 (numbers only) in 'Address Line 2' field", "Error message is displayed for invalid address line 2", "address_line2", "12345")
+execute_test_step(4, "Enter invalid city (numbers only) in 'City' field", "Error message is displayed for invalid city", "city", "12345")
+execute_test_step(5, "Enter invalid state (numbers only) in 'State' field", "Error message is displayed for invalid state", "state", "12345")
+execute_test_step(6, "Enter invalid zip code (alphabets) in 'Zip Code' field", "Error message is displayed for invalid zip code", "zip_code", "abc123")
+execute_test_step(7, "Enter invalid status (special characters) in 'Status' field", "Error message is displayed for invalid status", "status", "To Rent*")
+execute_test_step(8, "Enter invalid unit number (alphabets) in 'Unit Number' field", "Error message is displayed for invalid unit number", "unit_number", "abc")
+execute_test_step(9, "Click on 'Add Property' button", "Property is not created and error message is displayed", "Add Property")
+
+# Test Case TC_PROPERTY_03
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Property' button", "Add New Property screen is displayed", "Add Property")
+execute_test_step(2, "Leave 'Address Line 1' field empty", "Error message is displayed for empty address line 1", "address_line1", "")
+execute_test_step(3, "Leave 'City' field empty", "Error message is displayed for empty city", "city", "")
+execute_test_step(4, "Leave 'State' field empty", "Error message is displayed for empty state", "state", "")
+execute_test_step(5, "Leave 'Zip Code' field empty", "Error message is displayed for empty zip code", "zip_code", "")
+execute_test_step(6, "Leave 'Status' field empty", "Status is accepted as optional", "status", "")
+execute_test_step(7, "Leave 'Unit Number' field empty", "Unit number is accepted as optional", "unit_number", "")
+execute_test_step(8, "Click on 'Add Property' button", "Property is not created and error message is displayed", "Add Property")
+
+# Test Case TC_PROPERTY_04
+driver.get(base_url)
+execute_test_step(1, "Click on 'Add Property' button", "Add New Property screen is displayed", "Add Property")
+execute_test_step(2, "Enter valid data in all fields", "Data is entered successfully", "address_line1", "456 Elm St", "address_line2", "Apt 2", "city", "Springfield", "state", "IL", "zip_code", "62701", "status", "To Rent", "unit_number", "2")
+execute_test_step(3, "Click on 'Cancel' button", "Add New Property screen is closed and user is redirected to the main screen", "Cancel")
+
+# Test Case TC_PROPERTY_05
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Properties table", "Properties table is displayed", "Properties")
+execute_test_step(2, "Click on 'Actions' button for an existing property", "Edit Property screen is displayed", "Actions")
+execute_test_step(3, "Edit the 'Address Line 1' field", "Address line 1 is updated successfully", "address_line1", "789 Oak St")
+execute_test_step(4, "Click on 'Save' button", "Property details are updated successfully and displayed in the Properties table", "Save")
+
+# Test Case TC_PROPERTY_06
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Properties table", "Properties table is displayed", "Properties")
+execute_test_step(2, "Click on 'Actions' button for an existing property", "Delete confirmation dialog is displayed", "Actions")
+execute_test_step(3, "Click on 'Delete' button", "Property is deleted successfully and removed from the Properties table", "Delete")
+
+# Test Case TC_PROPERTY_07
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Properties table", "Properties table is displayed", "Properties")
+execute_test_step(2, "Enter a valid city in the search field", "Properties matching the entered city are displayed", "search_property", "Anytown")
+execute_test_step(3, "Clear the search field", "All properties are displayed again", "search_property", "")
+
+# Test Case TC_PROPERTY_08
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Properties table", "Properties table is displayed", "Properties")
+execute_test_step(2, "Click on the 'Address' of a property", "Property details are displayed in a separate screen", "Address")
+execute_test_step(3, "Click on 'Back' button", "User is redirected to the Properties table", "Back")
+
+# Test Case TC_LEASE_01
+driver.get(base_url)
+execute_test_step(1, "Click on 'Prepare Lease' button", "Prepare New Lease screen is displayed", "Prepare Lease")
+execute_test_step(2, "Select a valid property from the 'Property' dropdown", "Property is selected successfully", "property_id", "123 Main St")
+execute_test_step(3, "Select a valid tenant from the 'Tenant' dropdown", "Tenant is selected successfully", "tenant_id", "John Doe")
+execute_test_step(4, "Enter valid start date in 'Start Date' field", "Start date is entered successfully", "start_date", "2024-01-01")
+execute_test_step(5, "Enter valid end date in 'End Date' field", "End date is entered successfully", "end_date", "2025-01-01")
+execute_test_step(6, "Enter valid monthly rent in 'Monthly Rent' field", "Monthly rent is entered successfully", "monthly_rent", "1500")
+execute_test_step(7, "Enter valid security deposit in 'Security Deposit' field", "Security deposit is entered successfully", "security_deposit", "1500")
+execute_test_step(8, "Enter valid payment due date in 'Payment Due Date' field", "Payment due date is entered successfully", "payment_due_date", "2024-01-15")
+execute_test_step(9, "Enter valid payment method in 'Payment Method' field", "Payment method is entered successfully", "payment_method", "Check")
+execute_test_step(10, "Click on 'Create Lease' button", "Lease is created successfully and displayed in the Leases table", "Create Lease")
+
+# Test Case TC_LEASE_02
+driver.get(base_url)
+execute_test_step(1, "Click on 'Prepare Lease' button", "Prepare New Lease screen is displayed", "Prepare Lease")
+execute_test_step(2, "Select an invalid property (non-existent) from the 'Property' dropdown", "Error message is displayed for invalid property selection", "property_id", "Invalid Property")
+execute_test_step(3, "Select an invalid tenant (non-existent) from the 'Tenant' dropdown", "Error message is displayed for invalid tenant selection", "tenant_id", "Invalid Tenant")
+execute_test_step(4, "Enter invalid start date (future date) in 'Start Date' field", "Error message is displayed for invalid start date", "start_date", "2025-01-01")
+execute_test_step(5, "Enter invalid end date (past date) in 'End Date' field", "Error message is displayed for invalid end date", "end_date", "2023-01-01")
+execute_test_step(6, "Enter invalid monthly rent (alphabets) in 'Monthly Rent' field", "Error message is displayed for invalid monthly rent", "monthly_rent", "abc")
+execute_test_step(7, "Enter invalid security deposit (alphabets) in 'Security Deposit' field", "Error message is displayed for invalid security deposit", "security_deposit", "abc")
+execute_test_step(8, "Enter invalid payment due date (future date) in 'Payment Due Date' field", "Error message is displayed for invalid payment due date", "payment_due_date", "2025-01-01")
+execute_test_step(9, "Enter invalid payment method (special characters) in 'Payment Method' field", "Error message is displayed for invalid payment method", "payment_method", "Invalid Payment Method")
+execute_test_step(10, "Click on 'Create Lease' button", "Lease is not created and error message is displayed", "Create Lease")
+
+# Test Case TC_LEASE_03
+driver.get(base_url)
+execute_test_step(1, "Click on 'Prepare Lease' button", "Prepare New Lease screen is displayed", "Prepare Lease")
+execute_test_step(2, "Leave 'Property' field empty", "Error message is displayed for empty property selection", "property_id", "")
+execute_test_step(3, "Leave 'Tenant' field empty", "Error message is displayed for empty tenant selection", "tenant_id", "")
+execute_test_step(4, "Leave 'Start Date' field empty", "Error message is displayed for empty start date", "start_date", "")
+execute_test_step(5, "Leave 'End Date' field empty", "Error message is displayed for empty end date", "end_date", "")
+execute_test_step(6, "Leave 'Monthly Rent' field empty", "Error message is displayed for empty monthly rent", "monthly_rent", "")
+execute_test_step(7, "Leave 'Security Deposit' field empty", "Error message is displayed for empty security deposit", "security_deposit", "")
+execute_test_step(8, "Leave 'Payment Due Date' field empty", "Error message is displayed for empty payment due date", "payment_due_date", "")
+execute_test_step(9, "Leave 'Payment Method' field empty", "Error message is displayed for empty payment method", "payment_method", "")
+execute_test_step(10, "Click on 'Create Lease' button", "Lease is not created and error message is displayed", "Create Lease")
+
+# Test Case TC_LEASE_04
+driver.get(base_url)
+execute_test_step(1, "Click on 'Prepare Lease' button", "Prepare New Lease screen is displayed", "Prepare Lease")
+execute_test_step(2, "Enter valid data in all fields", "Data is entered successfully", "property_id", "123 Main St", "tenant_id", "John Doe", "start_date", "2024-01-01", "end_date", "2025-01-01", "monthly_rent", "1500", "security_deposit", "1500", "payment_due_date", "2024-01-15", "payment_method", "Check")
+execute_test_step(3, "Click on 'Cancel' button", "Prepare New Lease screen is closed and user is redirected to the main screen", "Cancel")
+
+# Test Case TC_LEASE_05
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Leases table", "Leases table is displayed", "Leases")
+execute_test_step(2, "Click on 'Actions' button for an existing lease", "Edit Lease screen is displayed", "Actions")
+execute_test_step(3, "Edit the 'Monthly Rent' field", "Monthly rent is updated successfully", "monthly_rent", "1750")
+execute_test_step(4, "Click on 'Save' button", "Lease details are updated successfully and displayed in the Leases table", "Save")
+
+# Test Case TC_LEASE_06
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Leases table", "Leases table is displayed", "Leases")
+execute_test_step(2, "Click on 'Actions' button for an existing lease", "Delete confirmation dialog is displayed", "Actions")
+execute_test_step(3, "Click on 'Delete' button", "Lease is deleted successfully and removed from the Leases table", "Delete")
+
+# Test Case TC_LEASE_07
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Leases table", "Leases table is displayed", "Leases")
+execute_test_step(2, "Enter a valid tenant name in the search field", "Leases matching the entered tenant name are displayed", "search_lease", "John Doe")
+execute_test_step(3, "Clear the search field", "All leases are displayed again", "search_lease", "")
+
+# Test Case TC_LEASE_08
+driver.get(base_url)
+execute_test_step(1, "Navigate to the Leases table", "Leases table is displayed", "Leases")
+execute_test_step(2, "Click on the 'Tenant' of a lease", "Lease details are displayed in a separate screen", "Tenant")
+execute_test_step(3, "Click on 'Back' button", "User is redirected to the Leases table", "Back")
+
+# Generate test report
+print(f"\nTest Report:")
+print(f"Passed Tests: {passed_tests}")
+print(f"Failed Tests: {failed_tests}")
+
+# Quit the WebDriver
 driver.quit()
