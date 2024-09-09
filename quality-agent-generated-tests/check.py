@@ -41,11 +41,11 @@ def test_case_1():
         else:
             print("Test Case 1: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_01.png")
+            driver.save_screenshot("error_screenshot_test_case_1.png")
     except Exception as e:
         print(f"Test Case 1: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_01.png")
+        driver.save_screenshot("error_screenshot_test_case_1.png")
         print(f"Error: {e}")
 
 # Test Case 2: Create a new tenant with invalid data - empty first name
@@ -71,11 +71,11 @@ def test_case_2():
         else:
             print("Test Case 2: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_02.png")
+            driver.save_screenshot("error_screenshot_test_case_2.png")
     except Exception as e:
         print(f"Test Case 2: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_02.png")
+        driver.save_screenshot("error_screenshot_test_case_2.png")
         print(f"Error: {e}")
 
 # Test Case 3: Create a new tenant with invalid data - invalid email address
@@ -102,11 +102,11 @@ def test_case_3():
         else:
             print("Test Case 3: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_03.png")
+            driver.save_screenshot("error_screenshot_test_case_3.png")
     except Exception as e:
         print(f"Test Case 3: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_03.png")
+        driver.save_screenshot("error_screenshot_test_case_3.png")
         print(f"Error: {e}")
 
 # Test Case 4: Create a new tenant with invalid data - special characters in first name
@@ -133,11 +133,11 @@ def test_case_4():
         else:
             print("Test Case 4: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_04.png")
+            driver.save_screenshot("error_screenshot_test_case_4.png")
     except Exception as e:
         print(f"Test Case 4: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_04.png")
+        driver.save_screenshot("error_screenshot_test_case_4.png")
         print(f"Error: {e}")
 
 # Test Case 5: Create a new tenant with invalid data - special characters in last name
@@ -164,11 +164,11 @@ def test_case_5():
         else:
             print("Test Case 5: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_05.png")
+            driver.save_screenshot("error_screenshot_test_case_5.png")
     except Exception as e:
         print(f"Test Case 5: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_05.png")
+        driver.save_screenshot("error_screenshot_test_case_5.png")
         print(f"Error: {e}")
 
 # Test Case 6: Create a new tenant with invalid data - invalid contact number
@@ -195,11 +195,11 @@ def test_case_6():
         else:
             print("Test Case 6: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_06.png")
+            driver.save_screenshot("error_screenshot_test_case_6.png")
     except Exception as e:
         print(f"Test Case 6: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_06.png")
+        driver.save_screenshot("error_screenshot_test_case_6.png")
         print(f"Error: {e}")
 
 # Test Case 7: Cancel tenant creation
@@ -226,11 +226,11 @@ def test_case_7():
         else:
             print("Test Case 7: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_07.png")
+            driver.save_screenshot("error_screenshot_test_case_7.png")
     except Exception as e:
         print(f"Test Case 7: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_07.png")
+        driver.save_screenshot("error_screenshot_test_case_7.png")
         print(f"Error: {e}")
 
 # Test Case 8: Create a new tenant with existing email address
@@ -257,11 +257,11 @@ def test_case_8():
         else:
             print("Test Case 8: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_08.png")
+            driver.save_screenshot("error_screenshot_test_case_8.png")
     except Exception as e:
         print(f"Test Case 8: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_08.png")
+        driver.save_screenshot("error_screenshot_test_case_8.png")
         print(f"Error: {e}")
 
 # Test Case 9: Create a new tenant with existing contact number
@@ -288,11 +288,11 @@ def test_case_9():
         else:
             print("Test Case 9: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_09.png")
+            driver.save_screenshot("error_screenshot_test_case_9.png")
     except Exception as e:
         print(f"Test Case 9: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_09.png")
+        driver.save_screenshot("error_screenshot_test_case_9.png")
         print(f"Error: {e}")
 
 # Test Case 10: Create a new tenant with empty last name
@@ -318,11 +318,11 @@ def test_case_10():
         else:
             print("Test Case 10: Failed")
             failed_tests += 1
-            driver.save_screenshot("error_screenshot_TC_TENANT_10.png")
+            driver.save_screenshot("error_screenshot_test_case_10.png")
     except Exception as e:
         print(f"Test Case 10: Failed")
         failed_tests += 1
-        driver.save_screenshot("error_screenshot_TC_TENANT_10.png")
+        driver.save_screenshot("error_screenshot_test_case_10.png")
         print(f"Error: {e}")
 
 # Run all test cases
