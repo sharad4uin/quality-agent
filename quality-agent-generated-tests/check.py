@@ -56,7 +56,7 @@ def test_tc_tenant_01():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_01_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_01.png")
 
 # Test Case TC_TENANT_02: Create a new tenant with invalid data
 def test_tc_tenant_02():
@@ -71,11 +71,11 @@ def test_tc_tenant_02():
         time.sleep(0.5)
 
         # Enter invalid last name
-        driver.find_element(By.ID, "last_name").send_keys("12345678")
+        driver.find_element(By.ID, "last_name").send_keys("1234567")
         time.sleep(0.5)
 
         # Enter invalid contact number
-        driver.find_element(By.ID, "contact_number").send_keys("abcdefgh")
+        driver.find_element(By.ID, "contact_number").send_keys("abcdefg")
         time.sleep(0.5)
 
         # Enter invalid email address
@@ -100,7 +100,7 @@ def test_tc_tenant_02():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_02_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_02.png")
 
 # Test Case TC_TENANT_03: Create a new tenant with empty fields
 def test_tc_tenant_03():
@@ -143,7 +143,7 @@ def test_tc_tenant_03():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_03_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_03.png")
 
 # Test Case TC_TENANT_04: Cancel tenant creation
 def test_tc_tenant_04():
@@ -167,7 +167,7 @@ def test_tc_tenant_04():
         driver.find_element(By.XPATH, "//button[text()='Cancel']").click()
         time.sleep(0.5)
 
-        # Assert that the Add New Tenant screen is closed and user is redirected to the main screen
+        # Assert that the Add New Tenant screen is closed and the user is redirected to the main screen
         assert "Lease Management System" in driver.title
         passed_tests += 1
         print(f"Test Case TC_TENANT_04: Passed")
@@ -178,7 +178,7 @@ def test_tc_tenant_04():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_04_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_04.png")
 
 # Test Case TC_TENANT_05: Edit existing tenant
 def test_tc_tenant_05():
@@ -188,7 +188,7 @@ def test_tc_tenant_05():
         driver.get(base_url)
         time.sleep(0.5)
 
-        # Create a new tenant to edit
+        # Create a new tenant for editing
         driver.find_element(By.XPATH, "//a[text()='Add Tenant']").click()
         time.sleep(0.5)
         driver.find_element(By.ID, "first_name").send_keys("Test")
@@ -223,7 +223,7 @@ def test_tc_tenant_05():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_05_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_05.png")
 
 # Test Case TC_TENANT_06: Delete existing tenant
 def test_tc_tenant_06():
@@ -233,7 +233,7 @@ def test_tc_tenant_06():
         driver.get(base_url)
         time.sleep(0.5)
 
-        # Create a new tenant to delete
+        # Create a new tenant for deletion
         driver.find_element(By.XPATH, "//a[text()='Add Tenant']").click()
         time.sleep(0.5)
         driver.find_element(By.ID, "first_name").send_keys("Delete")
@@ -262,7 +262,7 @@ def test_tc_tenant_06():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_06_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_06.png")
 
 # Test Case TC_TENANT_07: Search for a tenant
 def test_tc_tenant_07():
@@ -272,7 +272,7 @@ def test_tc_tenant_07():
         driver.get(base_url)
         time.sleep(0.5)
 
-        # Create a new tenant to search for
+        # Create a new tenant for searching
         driver.find_element(By.XPATH, "//a[text()='Add Tenant']").click()
         time.sleep(0.5)
         driver.find_element(By.ID, "first_name").send_keys("Search")
@@ -306,7 +306,7 @@ def test_tc_tenant_07():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_07_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_07.png")
 
 # Test Case TC_TENANT_08: View tenant details
 def test_tc_tenant_08():
@@ -316,7 +316,7 @@ def test_tc_tenant_08():
         driver.get(base_url)
         time.sleep(0.5)
 
-        # Create a new tenant to view details
+        # Create a new tenant for viewing details
         driver.find_element(By.XPATH, "//a[text()='Add Tenant']").click()
         time.sleep(0.5)
         driver.find_element(By.ID, "first_name").send_keys("View")
@@ -327,7 +327,7 @@ def test_tc_tenant_08():
         time.sleep(0.5)
 
         # Click on the First Name of a tenant
-        driver.find_element(By.XPATH, "//td[text()='View']/following-sibling::td/a").click()
+        driver.find_element(By.XPATH, "//td[text()='View']").click()
         time.sleep(0.5)
 
         # Assert that tenant details are displayed in a separate screen
@@ -338,7 +338,7 @@ def test_tc_tenant_08():
         driver.find_element(By.XPATH, "//button[text()='Back']").click()
         time.sleep(0.5)
 
-        # Assert that user is redirected to the Tenants table
+        # Assert that the user is redirected to the Tenants table
         assert "Lease Management System" in driver.title
         passed_tests += 1
         print(f"Test Case TC_TENANT_08: Passed")
@@ -349,7 +349,7 @@ def test_tc_tenant_08():
             print(f"Error: {e.msg}")
         else:
             print(f"Error: {e}")
-        driver.save_screenshot(f"TC_TENANT_08_error_screenshot.png")
+        driver.save_screenshot(f"error_screenshot_TC_TENANT_08.png")
 
 # Execute all test cases
 test_tc_tenant_01()
@@ -366,5 +366,5 @@ print(f"\nTest Report:")
 print(f"Total Passed Tests: {passed_tests}")
 print(f"Total Failed Tests: {failed_tests}")
 
-# Quit the WebDriver
+# Close the WebDriver
 driver.quit()
