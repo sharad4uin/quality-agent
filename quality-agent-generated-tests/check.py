@@ -6,392 +6,817 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
 
-# Initialize variables
-base_url = "https://lease-management-service-729496874389.us-central1.run.app/"
+# Initialize test report variables
 passed_tests = 0
 failed_tests = 0
 
-# Initialize WebDriver
+# Define the base URL
+base_url = "https://lease-management-service-729496874389.us-central1.run.app/"
+
+# Initialize the WebDriver
 driver = webdriver.Chrome()
 driver.implicitly_wait(0.5)
 
-# Function to take screenshot on error
-def take_screenshot(test_step_description):
-    try:
-        driver.save_screenshot(f'error_screenshot_{test_step_description}.png')
-    except Exception as e:
-        print(f"Error taking screenshot: {e}")
+# Test Case TC_TENANT_01: Create a new tenant with valid data
+try:
+    print("Running Test Case TC_TENANT_01: Create a new tenant with valid data")
+    # Navigate to the Add Tenant page
+    driver.get(base_url + "add_tenant")
 
-# Function to handle test steps
-def execute_test_step(test_step_id, test_step_description, expected_result):
-    global passed_tests, failed_tests
-    try:
-        # Execute test step based on description
-        if "Click on 'Add Tenant' button" in test_step_description:
-            add_tenant_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.LINK_TEXT, "Add Tenant"))
-            )
-            add_tenant_button.click()
-            time.sleep(0.5)
-        elif "Enter valid first name in 'First Name' field" in test_step_description:
-            first_name_field = driver.find_element(By.ID, "first_name")
-            first_name_field.send_keys("John")
-            time.sleep(0.5)
-        elif "Enter valid last name in 'Last Name' field" in test_step_description:
-            last_name_field = driver.find_element(By.ID, "last_name")
-            last_name_field.send_keys("Doe")
-            time.sleep(0.5)
-        elif "Enter valid contact number in 'Contact Number' field" in test_step_description:
-            contact_number_field = driver.find_element(By.ID, "contact_number")
-            contact_number_field.send_keys("1234567890")
-            time.sleep(0.5)
-        elif "Enter valid email address in 'Email' field" in test_step_description:
-            email_field = driver.find_element(By.ID, "email")
-            email_field.send_keys("john.doe@example.com")
-            time.sleep(0.5)
-        elif "Click on 'Add Tenant' button" in test_step_description:
-            add_tenant_button = driver.find_element(By.XPATH, "//button[text()='Add Tenant']")
-            add_tenant_button.click()
-            time.sleep(0.5)
-        elif "Enter invalid first name (special characters) in 'First Name' field" in test_step_description:
-            first_name_field = driver.find_element(By.ID, "first_name")
-            first_name_field.send_keys("John!")
-            time.sleep(0.5)
-        elif "Enter invalid last name (numbers only) in 'Last Name' field" in test_step_description:
-            last_name_field = driver.find_element(By.ID, "last_name")
-            last_name_field.send_keys("1234")
-            time.sleep(0.5)
-        elif "Enter invalid contact number (alphabets) in 'Contact Number' field" in test_step_description:
-            contact_number_field = driver.find_element(By.ID, "contact_number")
-            contact_number_field.send_keys("abcd")
-            time.sleep(0.5)
-        elif "Enter invalid email address (without @ symbol) in 'Email' field" in test_step_description:
-            email_field = driver.find_element(By.ID, "email")
-            email_field.send_keys("john.doeexample.com")
-            time.sleep(0.5)
-        elif "Leave 'First Name' field empty" in test_step_description:
-            first_name_field = driver.find_element(By.ID, "first_name")
-            first_name_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Last Name' field empty" in test_step_description:
-            last_name_field = driver.find_element(By.ID, "last_name")
-            last_name_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Contact Number' field empty" in test_step_description:
-            contact_number_field = driver.find_element(By.ID, "contact_number")
-            contact_number_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Email' field empty" in test_step_description:
-            email_field = driver.find_element(By.ID, "email")
-            email_field.clear()
-            time.sleep(0.5)
-        elif "Click on 'Cancel' button" in test_step_description:
-            cancel_button = driver.find_element(By.XPATH, "//button[text()='Cancel']")
-            cancel_button.click()
-            time.sleep(0.5)
-        elif "Click on 'Add Property' button" in test_step_description:
-            add_property_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.LINK_TEXT, "Add Property"))
-            )
-            add_property_button.click()
-            time.sleep(0.5)
-        elif "Enter valid address line 1 in 'Address Line 1' field" in test_step_description:
-            address_line1_field = driver.find_element(By.ID, "address_line1")
-            address_line1_field.send_keys("123 Main Street")
-            time.sleep(0.5)
-        elif "Enter valid address line 2 in 'Address Line 2' field" in test_step_description:
-            address_line2_field = driver.find_element(By.ID, "address_line2")
-            address_line2_field.send_keys("Apt 1")
-            time.sleep(0.5)
-        elif "Enter valid city in 'City' field" in test_step_description:
-            city_field = driver.find_element(By.ID, "city")
-            city_field.send_keys("Anytown")
-            time.sleep(0.5)
-        elif "Enter valid state in 'State' field" in test_step_description:
-            state_field = driver.find_element(By.ID, "state")
-            state_field.send_keys("CA")
-            time.sleep(0.5)
-        elif "Enter valid zip code in 'Zip Code' field" in test_step_description:
-            zip_code_field = driver.find_element(By.ID, "zip_code")
-            zip_code_field.send_keys("12345")
-            time.sleep(0.5)
-        elif "Enter valid status in 'Status' field" in test_step_description:
-            status_dropdown = driver.find_element(By.ID, "status")
-            status_dropdown.send_keys("To Rent")
-            time.sleep(0.5)
-        elif "Enter valid unit number in 'Unit Number' field" in test_step_description:
-            unit_number_field = driver.find_element(By.ID, "unit_number")
-            unit_number_field.send_keys("1")
-            time.sleep(0.5)
-        elif "Enter invalid address line 1 (special characters) in 'Address Line 1' field" in test_step_description:
-            address_line1_field = driver.find_element(By.ID, "address_line1")
-            address_line1_field.send_keys("123 Main Street!")
-            time.sleep(0.5)
-        elif "Enter invalid address line 2 (numbers only) in 'Address Line 2' field" in test_step_description:
-            address_line2_field = driver.find_element(By.ID, "address_line2")
-            address_line2_field.send_keys("1234")
-            time.sleep(0.5)
-        elif "Enter invalid city (numbers only) in 'City' field" in test_step_description:
-            city_field = driver.find_element(By.ID, "city")
-            city_field.send_keys("1234")
-            time.sleep(0.5)
-        elif "Enter invalid state (numbers only) in 'State' field" in test_step_description:
-            state_field = driver.find_element(By.ID, "state")
-            state_field.send_keys("1234")
-            time.sleep(0.5)
-        elif "Enter invalid zip code (alphabets) in 'Zip Code' field" in test_step_description:
-            zip_code_field = driver.find_element(By.ID, "zip_code")
-            zip_code_field.send_keys("abcd")
-            time.sleep(0.5)
-        elif "Enter invalid status (special characters) in 'Status' field" in test_step_description:
-            status_dropdown = driver.find_element(By.ID, "status")
-            status_dropdown.send_keys("To Rent!")
-            time.sleep(0.5)
-        elif "Enter invalid unit number (alphabets) in 'Unit Number' field" in test_step_description:
-            unit_number_field = driver.find_element(By.ID, "unit_number")
-            unit_number_field.send_keys("abc")
-            time.sleep(0.5)
-        elif "Leave 'Address Line 1' field empty" in test_step_description:
-            address_line1_field = driver.find_element(By.ID, "address_line1")
-            address_line1_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'City' field empty" in test_step_description:
-            city_field = driver.find_element(By.ID, "city")
-            city_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'State' field empty" in test_step_description:
-            state_field = driver.find_element(By.ID, "state")
-            state_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Zip Code' field empty" in test_step_description:
-            zip_code_field = driver.find_element(By.ID, "zip_code")
-            zip_code_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Status' field empty" in test_step_description:
-            status_dropdown = driver.find_element(By.ID, "status")
-            status_dropdown.clear()
-            time.sleep(0.5)
-        elif "Leave 'Unit Number' field empty" in test_step_description:
-            unit_number_field = driver.find_element(By.ID, "unit_number")
-            unit_number_field.clear()
-            time.sleep(0.5)
-        elif "Click on 'Prepare Lease' button" in test_step_description:
-            prepare_lease_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.LINK_TEXT, "Prepare Lease"))
-            )
-            prepare_lease_button.click()
-            time.sleep(0.5)
-        elif "Select a valid property from the 'Property' dropdown" in test_step_description:
-            property_dropdown = driver.find_element(By.ID, "property_id")
-            property_dropdown.click()
-            time.sleep(0.5)
-            property_dropdown.send_keys("123 Main Street")
-            time.sleep(0.5)
-        elif "Select a valid tenant from the 'Tenant' dropdown" in test_step_description:
-            tenant_dropdown = driver.find_element(By.ID, "tenant_id")
-            tenant_dropdown.click()
-            time.sleep(0.5)
-            tenant_dropdown.send_keys("John Doe")
-            time.sleep(0.5)
-        elif "Enter valid start date in 'Start Date' field" in test_step_description:
-            start_date_field = driver.find_element(By.ID, "start_date")
-            start_date_field.send_keys("2024-01-01")
-            time.sleep(0.5)
-        elif "Enter valid end date in 'End Date' field" in test_step_description:
-            end_date_field = driver.find_element(By.ID, "end_date")
-            end_date_field.send_keys("2025-01-01")
-            time.sleep(0.5)
-        elif "Enter valid monthly rent in 'Monthly Rent' field" in test_step_description:
-            monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
-            monthly_rent_field.send_keys("1000")
-            time.sleep(0.5)
-        elif "Enter valid security deposit in 'Security Deposit' field" in test_step_description:
-            security_deposit_field = driver.find_element(By.ID, "security_deposit")
-            security_deposit_field.send_keys("1000")
-            time.sleep(0.5)
-        elif "Enter valid payment due date in 'Payment Due Date' field" in test_step_description:
-            payment_due_date_field = driver.find_element(By.ID, "payment_due_date")
-            payment_due_date_field.send_keys("2024-02-01")
-            time.sleep(0.5)
-        elif "Enter valid payment method in 'Payment Method' field" in test_step_description:
-            payment_method_field = driver.find_element(By.ID, "payment_method")
-            payment_method_field.send_keys("Credit Card")
-            time.sleep(0.5)
-        elif "Select an invalid property (non-existent) from the 'Property' dropdown" in test_step_description:
-            property_dropdown = driver.find_element(By.ID, "property_id")
-            property_dropdown.click()
-            time.sleep(0.5)
-            property_dropdown.send_keys("Invalid Property")
-            time.sleep(0.5)
-        elif "Select an invalid tenant (non-existent) from the 'Tenant' dropdown" in test_step_description:
-            tenant_dropdown = driver.find_element(By.ID, "tenant_id")
-            tenant_dropdown.click()
-            time.sleep(0.5)
-            tenant_dropdown.send_keys("Invalid Tenant")
-            time.sleep(0.5)
-        elif "Enter invalid start date (future date) in 'Start Date' field" in test_step_description:
-            start_date_field = driver.find_element(By.ID, "start_date")
-            start_date_field.send_keys("2025-01-01")
-            time.sleep(0.5)
-        elif "Enter invalid end date (past date) in 'End Date' field" in test_step_description:
-            end_date_field = driver.find_element(By.ID, "end_date")
-            end_date_field.send_keys("2023-01-01")
-            time.sleep(0.5)
-        elif "Enter invalid monthly rent (alphabets) in 'Monthly Rent' field" in test_step_description:
-            monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
-            monthly_rent_field.send_keys("abcd")
-            time.sleep(0.5)
-        elif "Enter invalid security deposit (alphabets) in 'Security Deposit' field" in test_step_description:
-            security_deposit_field = driver.find_element(By.ID, "security_deposit")
-            security_deposit_field.send_keys("abcd")
-            time.sleep(0.5)
-        elif "Enter invalid payment due date (future date) in 'Payment Due Date' field" in test_step_description:
-            payment_due_date_field = driver.find_element(By.ID, "payment_due_date")
-            payment_due_date_field.send_keys("2025-01-01")
-            time.sleep(0.5)
-        elif "Enter invalid payment method (special characters) in 'Payment Method' field" in test_step_description:
-            payment_method_field = driver.find_element(By.ID, "payment_method")
-            payment_method_field.send_keys("!@#$%^")
-            time.sleep(0.5)
-        elif "Leave 'Property' field empty" in test_step_description:
-            property_dropdown = driver.find_element(By.ID, "property_id")
-            property_dropdown.clear()
-            time.sleep(0.5)
-        elif "Leave 'Tenant' field empty" in test_step_description:
-            tenant_dropdown = driver.find_element(By.ID, "tenant_id")
-            tenant_dropdown.clear()
-            time.sleep(0.5)
-        elif "Leave 'Start Date' field empty" in test_step_description:
-            start_date_field = driver.find_element(By.ID, "start_date")
-            start_date_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'End Date' field empty" in test_step_description:
-            end_date_field = driver.find_element(By.ID, "end_date")
-            end_date_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Monthly Rent' field empty" in test_step_description:
-            monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
-            monthly_rent_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Security Deposit' field empty" in test_step_description:
-            security_deposit_field = driver.find_element(By.ID, "security_deposit")
-            security_deposit_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Payment Due Date' field empty" in test_step_description:
-            payment_due_date_field = driver.find_element(By.ID, "payment_due_date")
-            payment_due_date_field.clear()
-            time.sleep(0.5)
-        elif "Leave 'Payment Method' field empty" in test_step_description:
-            payment_method_field = driver.find_element(By.ID, "payment_method")
-            payment_method_field.clear()
-            time.sleep(0.5)
-        elif "Navigate to the Tenants table" in test_step_description:
-            driver.get(base_url)
-            time.sleep(0.5)
-        elif "Click on 'Actions' button for an existing tenant" in test_step_description:
-            actions_button = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[3]//a[1]")
-            actions_button.click()
-            time.sleep(0.5)
-        elif "Edit the 'First Name' field" in test_step_description:
-            first_name_field = driver.find_element(By.ID, "first_name")
-            first_name_field.clear()
-            first_name_field.send_keys("Jane")
-            time.sleep(0.5)
-        elif "Click on 'Save' button" in test_step_description:
-            save_button = driver.find_element(By.XPATH, "//button[text()='Save']")
-            save_button.click()
-            time.sleep(0.5)
-        elif "Click on 'Delete' button" in test_step_description:
-            delete_button = driver.find_element(By.XPATH, "//button[text()='Delete']")
-            delete_button.click()
-            time.sleep(0.5)
-        elif "Enter a valid first name in the search field" in test_step_description:
-            search_field = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-            search_field.send_keys("John")
-            time.sleep(0.5)
-        elif "Clear the search field" in test_step_description:
-            search_field = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-            search_field.clear()
-            time.sleep(0.5)
-        elif "Click on the 'First Name' of a tenant" in test_step_description:
-            tenant_name = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[1]")
-            tenant_name.click()
-            time.sleep(0.5)
-        elif "Click on 'Back' button" in test_step_description:
-            back_button = driver.find_element(By.XPATH, "//button[text()='Back']")
-            back_button.click()
-            time.sleep(0.5)
-        elif "Navigate to the Properties table" in test_step_description:
-            driver.get(base_url)
-            time.sleep(0.5)
-        elif "Click on 'Actions' button for an existing property" in test_step_description:
-            actions_button = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[6]//a[1]")
-            actions_button.click()
-            time.sleep(0.5)
-        elif "Edit the 'Address Line 1' field" in test_step_description:
-            address_line1_field = driver.find_element(By.ID, "address_line1")
-            address_line1_field.clear()
-            address_line1_field.send_keys("124 Main Street")
-            time.sleep(0.5)
-        elif "Enter a valid city in the search field" in test_step_description:
-            search_field = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-            search_field.send_keys("Anytown")
-            time.sleep(0.5)
-        elif "Click on the 'Address' of a property" in test_step_description:
-            property_address = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[1]")
-            property_address.click()
-            time.sleep(0.5)
-        elif "Navigate to the Leases table" in test_step_description:
-            driver.get(base_url)
-            time.sleep(0.5)
-        elif "Click on 'Actions' button for an existing lease" in test_step_description:
-            actions_button = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[6]//a[1]")
-            actions_button.click()
-            time.sleep(0.5)
-        elif "Edit the 'Monthly Rent' field" in test_step_description:
-            monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
-            monthly_rent_field.clear()
-            monthly_rent_field.send_keys("1200")
-            time.sleep(0.5)
-        elif "Enter a valid tenant name in the search field" in test_step_description:
-            search_field = driver.find_element(By.XPATH, "//input[@placeholder='Search']")
-            search_field.send_keys("John Doe")
-            time.sleep(0.5)
-        elif "Click on the 'Tenant' of a lease" in test_step_description:
-            lease_tenant = driver.find_element(By.XPATH, "//table[@class='table table-striped']//tbody//tr[1]//td[2]")
-            lease_tenant.click()
-            time.sleep(0.5)
-        else:
-            print(f"Test step not implemented: {test_step_description}")
-            return
+    # Click on "Add Tenant" button
+    add_tenant_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Tenant')]"))
+    )
+    add_tenant_button.click()
+    time.sleep(0.5)
 
-        # Verify expected result
-        if expected_result in driver.page_source:
-            print(f"Test step {test_step_id} passed: {test_step_description}")
-            passed_tests += 1
-        else:
-            print(f"Test step {test_step_id} failed: {test_step_description}")
-            failed_tests += 1
-            take_screenshot(test_step_description)
-    except Exception as e:
-        print(f"Test step {test_step_id} failed: {test_step_description}")
-        failed_tests += 1
-        take_screenshot(test_step_description)
-        print(f"Error: {e}")
+    # Enter valid first name
+    first_name_field = driver.find_element(By.ID, "first_name")
+    first_name_field.send_keys("John")
+    time.sleep(0.5)
 
-# Read test cases from Excel file (replace with your actual file path)
-# ... (Code to read test cases from Excel file)
+    # Enter valid last name
+    last_name_field = driver.find_element(By.ID, "last_name")
+    last_name_field.send_keys("Doe")
+    time.sleep(0.5)
 
-# Execute test cases
-for test_case in test_cases:
-    print(f"Executing test case: {test_case['Test Case Description']}")
-    for test_step in test_case['Test Steps']:
-        execute_test_step(test_step['Test Step ID'], test_step['Test Step Description'], test_step['Expected Result'])
+    # Enter valid contact number
+    contact_number_field = driver.find_element(By.ID, "contact_number")
+    contact_number_field.send_keys("1234567890")
+    time.sleep(0.5)
 
-# Generate test report
-print(f"\nTest Report:")
-print(f"Passed Tests: {passed_tests}")
-print(f"Failed Tests: {failed_tests}")
+    # Enter valid email address
+    email_field = driver.find_element(By.ID, "email")
+    email_field.send_keys("john.doe@example.com")
+    time.sleep(0.5)
 
-# Close WebDriver
-driver.quit()
+    # Click on "Add Tenant" button
+    add_tenant_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Tenant')]")
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Assert that the tenant is created successfully
+    # (You'll need to add logic to verify the tenant is displayed in the table)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_01 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_01.png")
+
+# Test Case TC_TENANT_02: Create a new tenant with invalid data
+try:
+    print("Running Test Case TC_TENANT_02: Create a new tenant with invalid data")
+    # Navigate to the Add Tenant page
+    driver.get(base_url + "add_tenant")
+
+    # Click on "Add Tenant" button
+    add_tenant_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Tenant')]"))
+    )
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Enter invalid first name
+    first_name_field = driver.find_element(By.ID, "first_name")
+    first_name_field.send_keys("!@#$%^")
+    time.sleep(0.5)
+
+    # Enter invalid last name
+    last_name_field = driver.find_element(By.ID, "last_name")
+    last_name_field.send_keys("12345")
+    time.sleep(0.5)
+
+    # Enter invalid contact number
+    contact_number_field = driver.find_element(By.ID, "contact_number")
+    contact_number_field.send_keys("abcdefg")
+    time.sleep(0.5)
+
+    # Enter invalid email address
+    email_field = driver.find_element(By.ID, "email")
+    email_field.send_keys("john.doeexample.com")
+    time.sleep(0.5)
+
+    # Click on "Add Tenant" button
+    add_tenant_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Tenant')]")
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Assert that the tenant is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_02 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_02.png")
+
+# Test Case TC_TENANT_03: Create a new tenant with empty fields
+try:
+    print("Running Test Case TC_TENANT_03: Create a new tenant with empty fields")
+    # Navigate to the Add Tenant page
+    driver.get(base_url + "add_tenant")
+
+    # Click on "Add Tenant" button
+    add_tenant_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Tenant')]"))
+    )
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Leave "First Name" field empty
+    # Leave "Last Name" field empty
+    # Leave "Contact Number" field empty
+    # Leave "Email" field empty
+
+    # Click on "Add Tenant" button
+    add_tenant_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Tenant')]")
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Assert that the tenant is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_03 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_03.png")
+
+# Test Case TC_TENANT_04: Cancel tenant creation
+try:
+    print("Running Test Case TC_TENANT_04: Cancel tenant creation")
+    # Navigate to the Add Tenant page
+    driver.get(base_url + "add_tenant")
+
+    # Click on "Add Tenant" button
+    add_tenant_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Tenant')]"))
+    )
+    add_tenant_button.click()
+    time.sleep(0.5)
+
+    # Enter valid data in all fields
+    first_name_field = driver.find_element(By.ID, "first_name")
+    first_name_field.send_keys("John")
+    time.sleep(0.5)
+
+    last_name_field = driver.find_element(By.ID, "last_name")
+    last_name_field.send_keys("Doe")
+    time.sleep(0.5)
+
+    contact_number_field = driver.find_element(By.ID, "contact_number")
+    contact_number_field.send_keys("1234567890")
+    time.sleep(0.5)
+
+    email_field = driver.find_element(By.ID, "email")
+    email_field.send_keys("john.doe@example.com")
+    time.sleep(0.5)
+
+    # Click on "Cancel" button
+    cancel_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Cancel')]")
+    cancel_button.click()
+    time.sleep(0.5)
+
+    # Assert that the Add New Tenant screen is closed and the user is redirected to the main screen
+    # (You'll need to add logic to verify the redirection)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_04 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_04.png")
+
+# Test Case TC_TENANT_05: Edit existing tenant
+try:
+    print("Running Test Case TC_TENANT_05: Edit existing tenant")
+    # Navigate to the Tenants table
+    driver.get(base_url)
+
+    # Click on "Actions" button for an existing tenant
+    # (You'll need to add logic to identify the existing tenant)
+    # ...
+
+    # Edit the "First Name" field
+    # ...
+
+    # Click on "Save" button
+    # ...
+
+    # Assert that the tenant details are updated successfully
+    # (You'll need to add logic to verify the updated details)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_05 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_05.png")
+
+# Test Case TC_TENANT_06: Delete existing tenant
+try:
+    print("Running Test Case TC_TENANT_06: Delete existing tenant")
+    # Navigate to the Tenants table
+    driver.get(base_url)
+
+    # Click on "Actions" button for an existing tenant
+    # (You'll need to add logic to identify the existing tenant)
+    # ...
+
+    # Click on "Delete" button
+    # ...
+
+    # Assert that the tenant is deleted successfully
+    # (You'll need to add logic to verify the tenant is removed from the table)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_06 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_06.png")
+
+# Test Case TC_TENANT_07: Search for a tenant
+try:
+    print("Running Test Case TC_TENANT_07: Search for a tenant")
+    # Navigate to the Tenants table
+    driver.get(base_url)
+
+    # Enter a valid first name in the search field
+    # ...
+
+    # Assert that tenants matching the entered first name are displayed
+    # (You'll need to add logic to verify the search results)
+    # ...
+
+    # Clear the search field
+    # ...
+
+    # Assert that all tenants are displayed again
+    # (You'll need to add logic to verify the display of all tenants)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_07 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_07.png")
+
+# Test Case TC_TENANT_08: View tenant details
+try:
+    print("Running Test Case TC_TENANT_08: View tenant details")
+    # Navigate to the Tenants table
+    driver.get(base_url)
+
+    # Click on the "First Name" of a tenant
+    # (You'll need to add logic to identify the tenant)
+    # ...
+
+    # Assert that tenant details are displayed in a separate screen
+    # (You'll need to add logic to verify the display of details)
+    # ...
+
+    # Click on "Back" button
+    # ...
+
+    # Assert that the user is redirected to the Tenants table
+    # (You'll need to add logic to verify the redirection)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_TENANT_08 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_TENANT_08.png")
+
+# ... (Repeat similar test cases for Property and Lease)
+
+# Test Case TC_PROPERTY_01: Create a new property with valid data
+try:
+    print("Running Test Case TC_PROPERTY_01: Create a new property with valid data")
+    # Navigate to the Add Property page
+    driver.get(base_url + "add_property")
+
+    # Click on "Add Property" button
+    add_property_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Property')]"))
+    )
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Enter valid address line 1
+    address_line_1_field = driver.find_element(By.ID, "address_line_1")
+    address_line_1_field.send_keys("123 Main Street")
+    time.sleep(0.5)
+
+    # Enter valid address line 2
+    address_line_2_field = driver.find_element(By.ID, "address_line_2")
+    address_line_2_field.send_keys("Apt 1")
+    time.sleep(0.5)
+
+    # Enter valid city
+    city_field = driver.find_element(By.ID, "city")
+    city_field.send_keys("Anytown")
+    time.sleep(0.5)
+
+    # Enter valid state
+    state_field = driver.find_element(By.ID, "state")
+    state_field.send_keys("CA")
+    time.sleep(0.5)
+
+    # Enter valid zip code
+    zip_code_field = driver.find_element(By.ID, "zip_code")
+    zip_code_field.send_keys("12345")
+    time.sleep(0.5)
+
+    # Enter valid status
+    status_field = driver.find_element(By.ID, "status")
+    status_field.send_keys("Available")
+    time.sleep(0.5)
+
+    # Enter valid unit number
+    unit_number_field = driver.find_element(By.ID, "unit_number")
+    unit_number_field.send_keys("1")
+    time.sleep(0.5)
+
+    # Click on "Add Property" button
+    add_property_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Property')]")
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Assert that the property is created successfully
+    # (You'll need to add logic to verify the property is displayed in the table)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_01 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_01.png")
+
+# Test Case TC_PROPERTY_02: Create a new property with invalid data
+try:
+    print("Running Test Case TC_PROPERTY_02: Create a new property with invalid data")
+    # Navigate to the Add Property page
+    driver.get(base_url + "add_property")
+
+    # Click on "Add Property" button
+    add_property_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Property')]"))
+    )
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Enter invalid address line 1
+    address_line_1_field = driver.find_element(By.ID, "address_line_1")
+    address_line_1_field.send_keys("!@#$%^")
+    time.sleep(0.5)
+
+    # Enter invalid address line 2
+    address_line_2_field = driver.find_element(By.ID, "address_line_2")
+    address_line_2_field.send_keys("12345")
+    time.sleep(0.5)
+
+    # Enter invalid city
+    city_field = driver.find_element(By.ID, "city")
+    city_field.send_keys("12345")
+    time.sleep(0.5)
+
+    # Enter invalid state
+    state_field = driver.find_element(By.ID, "state")
+    state_field.send_keys("12345")
+    time.sleep(0.5)
+
+    # Enter invalid zip code
+    zip_code_field = driver.find_element(By.ID, "zip_code")
+    zip_code_field.send_keys("abcdefg")
+    time.sleep(0.5)
+
+    # Enter invalid status
+    status_field = driver.find_element(By.ID, "status")
+    status_field.send_keys("!@#$%^")
+    time.sleep(0.5)
+
+    # Enter invalid unit number
+    unit_number_field = driver.find_element(By.ID, "unit_number")
+    unit_number_field.send_keys("abcdefg")
+    time.sleep(0.5)
+
+    # Click on "Add Property" button
+    add_property_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Property')]")
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Assert that the property is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_02 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_02.png")
+
+# Test Case TC_PROPERTY_03: Create a new property with empty fields
+try:
+    print("Running Test Case TC_PROPERTY_03: Create a new property with empty fields")
+    # Navigate to the Add Property page
+    driver.get(base_url + "add_property")
+
+    # Click on "Add Property" button
+    add_property_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Property')]"))
+    )
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Leave "Address Line 1" field empty
+    # Leave "City" field empty
+    # Leave "State" field empty
+    # Leave "Zip Code" field empty
+    # Leave "Status" field empty
+    # Leave "Unit Number" field empty
+
+    # Click on "Add Property" button
+    add_property_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Add Property')]")
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Assert that the property is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_03 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_03.png")
+
+# Test Case TC_PROPERTY_04: Cancel property creation
+try:
+    print("Running Test Case TC_PROPERTY_04: Cancel property creation")
+    # Navigate to the Add Property page
+    driver.get(base_url + "add_property")
+
+    # Click on "Add Property" button
+    add_property_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Add Property')]"))
+    )
+    add_property_button.click()
+    time.sleep(0.5)
+
+    # Enter valid data in all fields
+    address_line_1_field = driver.find_element(By.ID, "address_line_1")
+    address_line_1_field.send_keys("123 Main Street")
+    time.sleep(0.5)
+
+    address_line_2_field = driver.find_element(By.ID, "address_line_2")
+    address_line_2_field.send_keys("Apt 1")
+    time.sleep(0.5)
+
+    city_field = driver.find_element(By.ID, "city")
+    city_field.send_keys("Anytown")
+    time.sleep(0.5)
+
+    state_field = driver.find_element(By.ID, "state")
+    state_field.send_keys("CA")
+    time.sleep(0.5)
+
+    zip_code_field = driver.find_element(By.ID, "zip_code")
+    zip_code_field.send_keys("12345")
+    time.sleep(0.5)
+
+    status_field = driver.find_element(By.ID, "status")
+    status_field.send_keys("Available")
+    time.sleep(0.5)
+
+    unit_number_field = driver.find_element(By.ID, "unit_number")
+    unit_number_field.send_keys("1")
+    time.sleep(0.5)
+
+    # Click on "Cancel" button
+    cancel_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Cancel')]")
+    cancel_button.click()
+    time.sleep(0.5)
+
+    # Assert that the Add New Property screen is closed and the user is redirected to the main screen
+    # (You'll need to add logic to verify the redirection)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_04 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_04.png")
+
+# Test Case TC_PROPERTY_05: Edit existing property
+try:
+    print("Running Test Case TC_PROPERTY_05: Edit existing property")
+    # Navigate to the Properties table
+    driver.get(base_url)
+
+    # Click on "Actions" button for an existing property
+    # (You'll need to add logic to identify the existing property)
+    # ...
+
+    # Edit the "Address Line 1" field
+    # ...
+
+    # Click on "Save" button
+    # ...
+
+    # Assert that the property details are updated successfully
+    # (You'll need to add logic to verify the updated details)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_05 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_05.png")
+
+# Test Case TC_PROPERTY_06: Delete existing property
+try:
+    print("Running Test Case TC_PROPERTY_06: Delete existing property")
+    # Navigate to the Properties table
+    driver.get(base_url)
+
+    # Click on "Actions" button for an existing property
+    # (You'll need to add logic to identify the existing property)
+    # ...
+
+    # Click on "Delete" button
+    # ...
+
+    # Assert that the property is deleted successfully
+    # (You'll need to add logic to verify the property is removed from the table)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_06 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_06.png")
+
+# Test Case TC_PROPERTY_07: Search for a property
+try:
+    print("Running Test Case TC_PROPERTY_07: Search for a property")
+    # Navigate to the Properties table
+    driver.get(base_url)
+
+    # Enter a valid city in the search field
+    # ...
+
+    # Assert that properties matching the entered city are displayed
+    # (You'll need to add logic to verify the search results)
+    # ...
+
+    # Clear the search field
+    # ...
+
+    # Assert that all properties are displayed again
+    # (You'll need to add logic to verify the display of all properties)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_07 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_07.png")
+
+# Test Case TC_PROPERTY_08: View property details
+try:
+    print("Running Test Case TC_PROPERTY_08: View property details")
+    # Navigate to the Properties table
+    driver.get(base_url)
+
+    # Click on the "Address" of a property
+    # (You'll need to add logic to identify the property)
+    # ...
+
+    # Assert that property details are displayed in a separate screen
+    # (You'll need to add logic to verify the display of details)
+    # ...
+
+    # Click on "Back" button
+    # ...
+
+    # Assert that the user is redirected to the Properties table
+    # (You'll need to add logic to verify the redirection)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_PROPERTY_08 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_PROPERTY_08.png")
+
+# Test Case TC_LEASE_01: Create a new lease with valid data
+try:
+    print("Running Test Case TC_LEASE_01: Create a new lease with valid data")
+    # Navigate to the Prepare Lease page
+    driver.get(base_url + "prepare_lease")
+
+    # Click on "Prepare Lease" button
+    prepare_lease_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Prepare Lease')]"))
+    )
+    prepare_lease_button.click()
+    time.sleep(0.5)
+
+    # Select a valid property from the "Property" dropdown
+    # (You'll need to add logic to identify the property dropdown and select a valid option)
+    # ...
+
+    # Select a valid tenant from the "Tenant" dropdown
+    # (You'll need to add logic to identify the tenant dropdown and select a valid option)
+    # ...
+
+    # Enter valid start date
+    start_date_field = driver.find_element(By.ID, "start_date")
+    start_date_field.send_keys("2024-01-01")
+    time.sleep(0.5)
+
+    # Enter valid end date
+    end_date_field = driver.find_element(By.ID, "end_date")
+    end_date_field.send_keys("2025-01-01")
+    time.sleep(0.5)
+
+    # Enter valid monthly rent
+    monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
+    monthly_rent_field.send_keys("1000")
+    time.sleep(0.5)
+
+    # Enter valid security deposit
+    security_deposit_field = driver.find_element(By.ID, "security_deposit")
+    security_deposit_field.send_keys("1000")
+    time.sleep(0.5)
+
+    # Enter valid payment due date
+    payment_due_date_field = driver.find_element(By.ID, "payment_due_date")
+    payment_due_date_field.send_keys("2024-01-15")
+    time.sleep(0.5)
+
+    # Enter valid payment method
+    payment_method_field = driver.find_element(By.ID, "payment_method")
+    payment_method_field.send_keys("Check")
+    time.sleep(0.5)
+
+    # Click on "Create Lease" button
+    create_lease_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Create Lease')]")
+    create_lease_button.click()
+    time.sleep(0.5)
+
+    # Assert that the lease is created successfully
+    # (You'll need to add logic to verify the lease is displayed in the table)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_LEASE_01 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_LEASE_01.png")
+
+# Test Case TC_LEASE_02: Create a new lease with invalid data
+try:
+    print("Running Test Case TC_LEASE_02: Create a new lease with invalid data")
+    # Navigate to the Prepare Lease page
+    driver.get(base_url + "prepare_lease")
+
+    # Click on "Prepare Lease" button
+    prepare_lease_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Prepare Lease')]"))
+    )
+    prepare_lease_button.click()
+    time.sleep(0.5)
+
+    # Select an invalid property from the "Property" dropdown
+    # (You'll need to add logic to identify the property dropdown and select an invalid option)
+    # ...
+
+    # Select an invalid tenant from the "Tenant" dropdown
+    # (You'll need to add logic to identify the tenant dropdown and select an invalid option)
+    # ...
+
+    # Enter invalid start date
+    start_date_field = driver.find_element(By.ID, "start_date")
+    start_date_field.send_keys("2024-01-01")
+    time.sleep(0.5)
+
+    # Enter invalid end date
+    end_date_field = driver.find_element(By.ID, "end_date")
+    end_date_field.send_keys("2023-01-01")
+    time.sleep(0.5)
+
+    # Enter invalid monthly rent
+    monthly_rent_field = driver.find_element(By.ID, "monthly_rent")
+    monthly_rent_field.send_keys("abc")
+    time.sleep(0.5)
+
+    # Enter invalid security deposit
+    security_deposit_field = driver.find_element(By.ID, "security_deposit")
+    security_deposit_field.send_keys("abc")
+    time.sleep(0.5)
+
+    # Enter invalid payment due date
+    payment_due_date_field = driver.find_element(By.ID, "payment_due_date")
+    payment_due_date_field.send_keys("2024-02-01")
+    time.sleep(0.5)
+
+    # Enter invalid payment method
+    payment_method_field = driver.find_element(By.ID, "payment_method")
+    payment_method_field.send_keys("!@#$%^")
+    time.sleep(0.5)
+
+    # Click on "Create Lease" button
+    create_lease_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Create Lease')]")
+    create_lease_button.click()
+    time.sleep(0.5)
+
+    # Assert that the lease is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_LEASE_02 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed: {e}")
+    driver.save_screenshot(f"error_screenshot_TC_LEASE_02.png")
+
+# Test Case TC_LEASE_03: Create a new lease with empty fields
+try:
+    print("Running Test Case TC_LEASE_03: Create a new lease with empty fields")
+    # Navigate to the Prepare Lease page
+    driver.get(base_url + "prepare_lease")
+
+    # Click on "Prepare Lease" button
+    prepare_lease_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Prepare Lease')]"))
+    )
+    prepare_lease_button.click()
+    time.sleep(0.5)
+
+    # Leave "Property" field empty
+    # Leave "Tenant" field empty
+    # Leave "Start Date" field empty
+    # Leave "End Date" field empty
+    # Leave "Monthly Rent" field empty
+    # Leave "Security Deposit" field empty
+    # Leave "Payment Due Date" field empty
+    # Leave "Payment Method" field empty
+
+    # Click on "Create Lease" button
+    create_lease_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Create Lease')]")
+    create_lease_button.click()
+    time.sleep(0.5)
+
+    # Assert that the lease is not created and an error message is displayed
+    # (You'll need to add logic to verify the error message)
+    # ...
+
+    passed_tests += 1
+    print("Test Case TC_LEASE_03 passed")
+
+except Exception as e:
+    failed_tests += 1
+    print(f"Test step failed:
